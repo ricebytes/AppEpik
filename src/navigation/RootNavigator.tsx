@@ -9,6 +9,7 @@ import { ExitoScreen } from '../screens/enrolamiento/ExitoScreen';
 import { LoginScreen } from '../screens/login/LoginScreen';
 import { ValidandoLoginScreen } from '../screens/login/ValidandoLoginScreen';
 import { DashboardScreen } from '../screens/login/DashboardScreen';
+import { BienvenidaScreen } from '../screens/bienvenida/BienvenidaScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -16,6 +17,7 @@ export function RootNavigator() {
   return (
     <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Splash" component={SplashScreen} />
+      <Stack.Screen name="Bienvenida" component={BienvenidaScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="ValidandoLogin" component={ValidandoLoginScreen} />
       <Stack.Screen name="Dashboard" component={DashboardScreen} />

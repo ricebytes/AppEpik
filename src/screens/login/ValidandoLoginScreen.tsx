@@ -15,7 +15,7 @@ export function ValidandoLoginScreen({ navigation }: Props) {
   useEffect(() => {
     if (estado === 'autenticado') {
       navigation.reset({ index: 0, routes: [{ name: 'Dashboard' }] });
-    } else if (estado === 'error') {
+    } else if (estado === 'error' || estado === 'bloqueado') {
       navigation.reset({ index: 0, routes: [{ name: 'Login' }] });
     }
   }, [estado, navigation]);

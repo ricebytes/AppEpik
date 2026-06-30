@@ -108,13 +108,6 @@ export function LoginScreen({ navigation }: Props) {
         <View style={styles.spacer} />
 
         <Button label="Entrar →" onPress={handleSubmit} disabled={!puedeEnviar} />
-
-        <Text style={styles.nuevoTexto}>¿Eres nuevo en epik?</Text>
-        <Button
-          label="Crea tu cuenta"
-          variant="secondary"
-          onPress={() => navigation.navigate('IngresoIdentificacion')}
-        />
       </View>
     </View>
   );
@@ -181,11 +174,5 @@ const styles = StyleSheet.create({
   spacer: {
     flex: 1,
   },
-  nuevoTexto: {
-    ...typography.caption,
-    color: '#888780',
-    textAlign: 'center',
-    marginTop: 14,
-    marginBottom: 8,
-  },
+
 });

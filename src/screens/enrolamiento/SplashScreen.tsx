@@ -15,7 +15,7 @@ const AUTO_NAVIGATE_DELAY_MS = 1200;
 export function SplashScreen({ navigation }: Props) {
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.replace('Login');
+      navigation.replace('Bienvenida');
     }, AUTO_NAVIGATE_DELAY_MS);
 
     return () => clearTimeout(timer);

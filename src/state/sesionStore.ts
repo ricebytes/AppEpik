@@ -39,10 +39,19 @@ export const useSesionStore = create<SesionState>((set, get) => ({
       const cliente = await iniciarSesionUseCase.execute(tipoIdentificacion, identificacion, clave);
       set({ cliente, estado: 'autenticado', intentosFallidos: 0, bloqueadoHasta: null });
     } catch (err) {
+      // Log para depuración visible en Metro
+      if (err instanceof ApiError) {
+        console.error(`[Login] ApiError status=${err.status} message=${err.message}`);
+      } else if (err instanceof Error) {
+        console.error(`[Login] Error name=${err.name} message=${err.message}`);
+      } else {
+        console.error('[Login] Error desconocido:', err);
+      }
+
       if (err instanceof ApiError && err.status === 423) {
         set({
           estado: 'bloqueado',
-          error: 'Cuenta bloqueada temporalmente por el servidor. Intenta de nuevo en 15 minutos.',
+          error: 'Cuenta bloqueada por el servidor. Intenta de nuevo en 15 minutos.',
           intentosFallidos: 0,
           bloqueadoHasta: null,
         });
@@ -54,14 +63,26 @@ export const useSesionStore = create<SesionState>((set, get) => ({
       if (intentosFallidos >= MAX_INTENTOS) {
         set({
           estado: 'bloqueado',
-          error: 'Demasiados intentos fallidos. Tu acceso quedó bloqueado temporalmente.',
+          error: 'Demasiados intentos fallidos. Espera 60 segundos.',
           intentosFallidos: 0,
           bloqueadoHasta: Date.now() + BLOQUEO_MS,
         });
         return;
       }
 
-      set({ estado: 'error', error: 'Identificación o clave incorrectas.', intentosFallidos });
+      let mensajeError = 'Identificación o clave incorrectas.';
+      if (err instanceof ApiError) {
+        if (err.status >= 500) {
+          mensajeError = 'Error del servidor. Intenta de nuevo.';
+        } else if (err.status === 404) {
+          mensajeError = 'Usuario no encontrado.';
+        }
+        // 401/400 → credenciales incorrectas (mensaje por defecto)
+      } else if (err instanceof Error && (err.name === 'AbortError' || err.message.includes('Network'))) {
+        mensajeError = 'Sin conexión con el servidor. Verifica tu red.';
+      }
+
+      set({ estado: 'error', error: mensajeError, intentosFallidos });
     }
   },
   logout: () => set({ cliente: null, estado: 'idle', error: '', intentosFallidos: 0, bloqueadoHasta: null }),
