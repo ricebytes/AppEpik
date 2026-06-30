@@ -10,7 +10,12 @@ import { SelectorTipoIdentificacion } from '../../components/SelectorTipoIdentif
 import { TecladoPin } from '../../components/TecladoPin';
 import { Watermark } from '../../components/Watermark';
 import { useSesionStore } from '../../state/sesionStore';
-import { validarFormatoIdentificacion } from '../../utils/validacion';
+import {
+  formatearIdentificacion,
+  maxLengthIdentificacion,
+  placeholderIdentificacion,
+  validarFormatoIdentificacion,
+} from '../../utils/validacion';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
@@ -27,8 +32,13 @@ export function LoginScreen({ navigation }: Props) {
 
   const puedeEnviar =
     tipoIdentificacion !== null &&
-    validarFormatoIdentificacion(numeroIdentificacion) &&
+    validarFormatoIdentificacion(numeroIdentificacion, tipoIdentificacion) &&
     pin.length === PIN_LENGTH;
+
+  function handleChangeTipo(codigo: string) {
+    setTipoIdentificacion(codigo);
+    setNumeroIdentificacion('');
+  }
 
   function handleTecla(tecla: string) {
     if (tecla === '') {
@@ -72,17 +82,18 @@ export function LoginScreen({ navigation }: Props) {
       <View style={[styles.form, { paddingBottom: insets.bottom + 20 }]}>
         <Text style={styles.label}>Tipo de identificación</Text>
         <View style={styles.selectorWrapper}>
-          <SelectorTipoIdentificacion value={tipoIdentificacion} onChange={setTipoIdentificacion} />
+          <SelectorTipoIdentificacion value={tipoIdentificacion} onChange={handleChangeTipo} />
         </View>
 
         <Text style={styles.label}>Número de identificación</Text>
         <TextInput
           style={styles.input}
           value={numeroIdentificacion}
-          onChangeText={setNumeroIdentificacion}
-          placeholder="1 234 567 890"
-          autoCapitalize="none"
+          onChangeText={(text) => setNumeroIdentificacion(formatearIdentificacion(text, tipoIdentificacion))}
+          placeholder={placeholderIdentificacion(tipoIdentificacion)}
           keyboardType="default"
+          autoCapitalize="characters"
+          maxLength={maxLengthIdentificacion(tipoIdentificacion)}
         />
 
         <Text style={styles.label}>Clave de 4 dígitos</Text>

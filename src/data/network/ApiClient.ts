@@ -67,4 +67,24 @@ export class ApiClient {
       clearTimeout(timeout);
     }
   }
+
+  async postVoid(path: string, body: unknown): Promise<void> {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
+
+    try {
+      const response = await fetch(`${this.baseUrl}${path}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+        signal: controller.signal,
+      });
+
+      if (!response.ok) {
+        throw new ApiError(response.status, `Error consultando ${path}: ${response.status}`);
+      }
+    } finally {
+      clearTimeout(timeout);
+    }
+  }
 }

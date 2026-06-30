@@ -37,7 +37,7 @@ export class EnrolamientoRepositoryImpl implements EnrolamientoRepository {
   }
 
   async confirmar(tipoIdentificacion: string, identificacion: string, clave: string): Promise<void> {
-    await this.apiClient.post<unknown>('/api/enrolamiento/confirmar', {
+    await this.apiClient.postVoid('/api/enrolamiento/confirmar', {
       tipoIdentificacion,
       identificacion,
       clave,

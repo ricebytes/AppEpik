@@ -11,7 +11,12 @@ import { Watermark } from '../../components/Watermark';
 import { consultarParaEnrolamientoUseCase } from '../../composition/enrolamientoModule';
 import { useEnrolamientoStore } from '../../state/enrolamientoStore';
 import { EnrolamientoDuplicadoError } from '../../data/enrolamiento/EnrolamientoRepositoryImpl';
-import { validarFormatoIdentificacion } from '../../utils/validacion';
+import {
+  formatearIdentificacion,
+  maxLengthIdentificacion,
+  placeholderIdentificacion,
+  validarFormatoIdentificacion,
+} from '../../utils/validacion';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'IngresoIdentificacion'>;
 
@@ -23,13 +28,18 @@ export function IngresoIdentificacionScreen({ navigation }: Props) {
   const setConsulta = useEnrolamientoStore((state) => state.setConsulta);
   const insets = useSafeAreaInsets();
 
+  function handleChangeTipo(codigo: string) {
+    setTipoIdentificacion(codigo);
+    setNumeroIdentificacion('');
+  }
+
   async function handleSubmit() {
     if (tipoIdentificacion === null) {
       setError('Selecciona tu tipo de identificación.');
       return;
     }
 
-    if (!validarFormatoIdentificacion(numeroIdentificacion)) {
+    if (!validarFormatoIdentificacion(numeroIdentificacion, tipoIdentificacion)) {
       setError('Ingresa un número de identificación válido.');
       return;
     }
@@ -66,17 +76,18 @@ export function IngresoIdentificacionScreen({ navigation }: Props) {
       <View style={[styles.form, { paddingBottom: insets.bottom + 20 }]}>
         <Text style={styles.label}>Tipo de identificación</Text>
         <View style={styles.selectorWrapper}>
-          <SelectorTipoIdentificacion value={tipoIdentificacion} onChange={setTipoIdentificacion} />
+          <SelectorTipoIdentificacion value={tipoIdentificacion} onChange={handleChangeTipo} />
         </View>
 
         <Text style={styles.label}>Número de identificación</Text>
         <TextInput
           style={styles.input}
           value={numeroIdentificacion}
-          onChangeText={setNumeroIdentificacion}
-          placeholder="1 234 567 890"
-          autoCapitalize="none"
+          onChangeText={(text) => setNumeroIdentificacion(formatearIdentificacion(text, tipoIdentificacion))}
+          placeholder={placeholderIdentificacion(tipoIdentificacion)}
           keyboardType="default"
+          autoCapitalize="characters"
+          maxLength={maxLengthIdentificacion(tipoIdentificacion)}
         />
         <Text style={styles.hint}>Lo usamos solo para consultar tus datos básicos.</Text>
 
