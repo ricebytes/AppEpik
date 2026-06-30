@@ -1,9 +1,11 @@
+export type CodigoTipoIdentificacion = 'CC' | 'PASAPORTE';
+
 export interface TipoIdentificacion {
-  codigo: number;
+  codigo: CodigoTipoIdentificacion;
   etiqueta: string;
 }
 
 export const TIPOS_IDENTIFICACION: TipoIdentificacion[] = [
-  { codigo: 1, etiqueta: 'Cédula de ciudadanía' },
-  { codigo: 2, etiqueta: 'Pasaporte' },
+  { codigo: 'CC', etiqueta: 'Cédula de ciudadanía' },
+  { codigo: 'PASAPORTE', etiqueta: 'Pasaporte' },
 ];

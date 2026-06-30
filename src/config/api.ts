@@ -1,15 +1,11 @@
-// URLs por entorno. __DEV__ solo distingue debug/release del bundler;
-// staging vs. producción en builds release debe resolverse vía variante de build
-// (.env por flavor / scheme), nunca con un solo valor hardcodeado compartido.
-const API_BASE_URL_DEV = 'https://api-dev.epik.com';
-const API_BASE_URL_PROD = 'https://api.epik.com';
+// En desarrollo local el backend corre en localhost:8090.
+// Para builds de release apuntar a la URL de producción cuando esté desplegada.
+export const API_BASE_URL = __DEV__ ? 'http://localhost:8090' : 'https://api.epik.com';
 
-// Pendiente: reemplazar cuando epik-backend expone la URL real del servicio.
-export const API_BASE_URL = __DEV__ ? API_BASE_URL_DEV : API_BASE_URL_PROD;
+// Usar implementaciones reales — el backend ya está disponible en localhost:8090.
+// Cambiar a true para pruebas offline sin backend.
+export const USE_FAKE_ENROLAMIENTO_REPOSITORY = false;
+export const USE_FAKE_AUTENTICACION_REPOSITORY = false;
 
-// Mientras epik-backend no esté disponible, usa datos de prueba para poder navegar el flujo completo.
-// CRÍTICO: estos flags deben quedar en `false` antes de cualquier build release/QA con datos reales.
+// Legacy: el endpoint GET /cliente/{id} ya no existe en el backend actual.
 export const USE_FAKE_CLIENTE_REPOSITORY = true;
-
-// Pendiente: reemplazar cuando epik-backend expone el endpoint real de autenticación.
-export const USE_FAKE_AUTENTICACION_REPOSITORY = true;

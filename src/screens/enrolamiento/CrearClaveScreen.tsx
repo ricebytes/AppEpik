@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/types';
@@ -8,6 +8,8 @@ import { typography } from '../../theme/typography';
 import { ScreenHeader } from '../../components/ScreenHeader';
 import { TecladoPin } from '../../components/TecladoPin';
 import { Watermark } from '../../components/Watermark';
+import { confirmarEnrolamientoUseCase } from '../../composition/enrolamientoModule';
+import { useEnrolamientoStore } from '../../state/enrolamientoStore';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CrearClave'>;
 
@@ -20,10 +22,13 @@ export function CrearClaveScreen({ navigation }: Props) {
   const [clave, setClave] = useState('');
   const [pin, setPin] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const tipoIdentificacion = useEnrolamientoStore((state) => state.tipoIdentificacion);
+  const numeroIdentificacion = useEnrolamientoStore((state) => state.numeroIdentificacion);
   const insets = useSafeAreaInsets();
 
-  function handleTecla(tecla: string) {
-    if (tecla === '') {
+  async function handleTecla(tecla: string) {
+    if (tecla === '' || loading) {
       return;
     }
 
@@ -48,18 +53,40 @@ export function CrearClaveScreen({ navigation }: Props) {
         return;
       }
 
-      if (siguiente === clave) {
-        navigation.navigate('Exito');
-      } else {
+      if (siguiente !== clave) {
         setError('Las claves no coinciden, intenta de nuevo.');
         setPin('');
         setClave('');
         setPaso('crear');
+        return;
+      }
+
+      if (!tipoIdentificacion || !numeroIdentificacion) {
+        setError('Error interno. Vuelve al inicio.');
+        return;
+      }
+
+      setLoading(true);
+      setError('');
+
+      try {
+        await confirmarEnrolamientoUseCase.execute(tipoIdentificacion, numeroIdentificacion, siguiente);
+        navigation.navigate('Exito');
+      } catch {
+        setError('No pudimos crear tu cuenta. Intenta de nuevo.');
+        setPin('');
+        setClave('');
+        setPaso('crear');
+      } finally {
+        setLoading(false);
       }
     }
   }
 
-  const titulo = paso === 'crear' ? 'Crea una clave de 4 dígitos\npara proteger tu cuenta' : 'Confirma tu clave\nde 4 dígitos';
+  const titulo =
+    paso === 'crear'
+      ? 'Crea una clave de 4 dígitos\npara proteger tu cuenta'
+      : 'Confirma tu clave\nde 4 dígitos';
 
   return (
     <View style={styles.container}>
@@ -72,7 +99,11 @@ export function CrearClaveScreen({ navigation }: Props) {
 
         {error.length > 0 && <Text style={styles.error}>{error}</Text>}
 
-        <TecladoPin pin={pin} longitud={PIN_LENGTH} onTecla={handleTecla} />
+        {loading ? (
+          <ActivityIndicator color={colors.violeta} style={styles.spinner} />
+        ) : (
+          <TecladoPin pin={pin} longitud={PIN_LENGTH} onTecla={handleTecla} />
+        )}
       </View>
     </View>
   );
@@ -98,5 +129,8 @@ const styles = StyleSheet.create({
     ...typography.caption,
     color: colors.magenta,
     marginBottom: 12,
+  },
+  spinner: {
+    marginTop: 40,
   },
 });

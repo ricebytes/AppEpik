@@ -9,17 +9,18 @@ import { Button } from '../../components/Button';
 import { ScreenHeader } from '../../components/ScreenHeader';
 import { Watermark } from '../../components/Watermark';
 import { useEnrolamientoStore } from '../../state/enrolamientoStore';
-import { buildIniciales, buildNombreCompleto } from '../../utils/nombre';
+import { buildIniciales } from '../../utils/nombre';
 import { maskEmail, maskPhone } from '../../utils/mask';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ConfirmacionDatos'>;
 
 export function ConfirmacionDatosScreen({ navigation }: Props) {
-  const cliente = useEnrolamientoStore((state) => state.cliente);
+  const datosEnrolamiento = useEnrolamientoStore((state) => state.datosEnrolamiento);
+  const numeroIdentificacion = useEnrolamientoStore((state) => state.numeroIdentificacion);
   const reset = useEnrolamientoStore((state) => state.reset);
   const insets = useSafeAreaInsets();
 
-  if (!cliente) {
+  if (!datosEnrolamiento) {
     navigation.replace('IngresoIdentificacion');
     return null;
   }
@@ -38,22 +39,22 @@ export function ConfirmacionDatosScreen({ navigation }: Props) {
       <View style={[styles.body, { paddingBottom: insets.bottom + 20 }]}>
         <View style={styles.identityRow}>
           <View style={styles.avatar}>
-            <Text style={styles.avatarLabel}>{buildIniciales(cliente)}</Text>
+            <Text style={styles.avatarLabel}>{buildIniciales(datosEnrolamiento)}</Text>
           </View>
           <View>
-            <Text style={styles.nombre}>{buildNombreCompleto(cliente)}</Text>
-            <Text style={styles.identificacion}>{cliente.numeroIdentificacion}</Text>
+            <Text style={styles.nombre}>{datosEnrolamiento.nombreCompleto}</Text>
+            <Text style={styles.identificacion}>{numeroIdentificacion}</Text>
           </View>
         </View>
 
         <View style={styles.detalle}>
           <View style={styles.detalleRow}>
             <Text style={styles.detalleLabel}>Teléfono</Text>
-            <Text style={styles.detalleValor}>{maskPhone(cliente.telefono)}</Text>
+            <Text style={styles.detalleValor}>{maskPhone(datosEnrolamiento.telefono)}</Text>
           </View>
           <View style={[styles.detalleRow, styles.detalleRowBorder]}>
             <Text style={styles.detalleLabel}>Correo</Text>
-            <Text style={styles.detalleValor}>{maskEmail(cliente.correo)}</Text>
+            <Text style={styles.detalleValor}>{maskEmail(datosEnrolamiento.correo)}</Text>
           </View>
         </View>
 

@@ -8,7 +8,7 @@ import { typography } from '../../theme/typography';
 import { Button } from '../../components/Button';
 import { Watermark } from '../../components/Watermark';
 import { useSesionStore } from '../../state/sesionStore';
-import { buildIniciales, buildNombreCompleto } from '../../utils/nombre';
+import { buildIniciales } from '../../utils/nombre';
 import { formatMonto } from '../../utils/moneda';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Dashboard'>;
@@ -22,6 +22,8 @@ export function DashboardScreen({ navigation }: Props) {
     navigation.reset({ index: 0, routes: [{ name: 'Login' }] });
     return null;
   }
+
+  const enMora = cliente.estadoCredito.toLowerCase().includes('mora');
 
   function handleCerrarSesion() {
     logout();
@@ -39,8 +41,10 @@ export function DashboardScreen({ navigation }: Props) {
           </View>
           <View>
             <Text style={styles.greeting}>¡Hola!</Text>
-            <Text style={styles.nombre}>{buildNombreCompleto(cliente)}</Text>
-            <Text style={styles.badge}>EN MORA: {formatMonto(cliente.cuotaEnMora)}</Text>
+            <Text style={styles.nombre}>{cliente.nombreCompleto}</Text>
+            {enMora && (
+              <Text style={styles.badge}>EN MORA: {formatMonto(cliente.cuotaEnMora)}</Text>
+            )}
           </View>
         </View>
       </View>

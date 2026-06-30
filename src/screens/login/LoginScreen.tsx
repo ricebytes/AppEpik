@@ -17,7 +17,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 const PIN_LENGTH = 4;
 
 export function LoginScreen({ navigation }: Props) {
-  const [tipoIdentificacion, setTipoIdentificacion] = useState<number | null>(null);
+  const [tipoIdentificacion, setTipoIdentificacion] = useState<string | null>(null);
   const [numeroIdentificacion, setNumeroIdentificacion] = useState('');
   const [pin, setPin] = useState('');
   const login = useSesionStore((state) => state.login);
@@ -56,7 +56,7 @@ export function LoginScreen({ navigation }: Props) {
       return;
     }
 
-    login(numeroIdentificacion, tipoIdentificacion, pin);
+    login(tipoIdentificacion, numeroIdentificacion, pin);
     navigation.navigate('ValidandoLogin');
   }
 
@@ -81,7 +81,8 @@ export function LoginScreen({ navigation }: Props) {
           value={numeroIdentificacion}
           onChangeText={setNumeroIdentificacion}
           placeholder="1 234 567 890"
-          autoCapitalize="characters"
+          autoCapitalize="none"
+          keyboardType="default"
         />
 
         <Text style={styles.label}>Clave de 4 dígitos</Text>

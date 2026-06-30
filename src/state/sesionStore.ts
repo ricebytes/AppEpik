@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { Cliente } from '../domain/cliente/Cliente';
+import { ApiError } from '../data/network/ApiClient';
 import { iniciarSesionUseCase } from '../composition/autenticacionModule';
 
 type EstadoSesion = 'idle' | 'cargando' | 'error' | 'autenticado' | 'bloqueado';
@@ -13,7 +14,7 @@ interface SesionState {
   error: string;
   intentosFallidos: number;
   bloqueadoHasta: number | null;
-  login: (numeroIdentificacion: string, tipoIdentificacion: number, clave: string) => Promise<void>;
+  login: (tipoIdentificacion: string, identificacion: string, clave: string) => Promise<void>;
   logout: () => void;
   limpiarError: () => void;
 }
@@ -24,7 +25,7 @@ export const useSesionStore = create<SesionState>((set, get) => ({
   error: '',
   intentosFallidos: 0,
   bloqueadoHasta: null,
-  login: async (numeroIdentificacion, tipoIdentificacion, clave) => {
+  login: async (tipoIdentificacion, identificacion, clave) => {
     const { bloqueadoHasta } = get();
     if (bloqueadoHasta !== null && Date.now() < bloqueadoHasta) {
       const segundosRestantes = Math.ceil((bloqueadoHasta - Date.now()) / 1000);
@@ -35,22 +36,32 @@ export const useSesionStore = create<SesionState>((set, get) => ({
     set({ estado: 'cargando', error: '' });
 
     try {
-      const cliente = await iniciarSesionUseCase.execute(numeroIdentificacion, tipoIdentificacion, clave);
+      const cliente = await iniciarSesionUseCase.execute(tipoIdentificacion, identificacion, clave);
       set({ cliente, estado: 'autenticado', intentosFallidos: 0, bloqueadoHasta: null });
-    } catch {
+    } catch (err) {
+      if (err instanceof ApiError && err.status === 423) {
+        set({
+          estado: 'bloqueado',
+          error: 'Cuenta bloqueada temporalmente por el servidor. Intenta de nuevo en 15 minutos.',
+          intentosFallidos: 0,
+          bloqueadoHasta: null,
+        });
+        return;
+      }
+
       const intentosFallidos = get().intentosFallidos + 1;
 
       if (intentosFallidos >= MAX_INTENTOS) {
         set({
           estado: 'bloqueado',
-          error: 'Demasiados intentos fallidos. Tu cuenta quedó bloqueada temporalmente.',
+          error: 'Demasiados intentos fallidos. Tu acceso quedó bloqueado temporalmente.',
           intentosFallidos: 0,
           bloqueadoHasta: Date.now() + BLOQUEO_MS,
         });
         return;
       }
 
-      set({ estado: 'error', error: 'Identificación, tipo o clave incorrectos.', intentosFallidos });
+      set({ estado: 'error', error: 'Identificación o clave incorrectas.', intentosFallidos });
     }
   },
   logout: () => set({ cliente: null, estado: 'idle', error: '', intentosFallidos: 0, bloqueadoHasta: null }),

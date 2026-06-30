@@ -8,25 +8,20 @@ import { typography } from '../../theme/typography';
 import { Button } from '../../components/Button';
 import { SelectorTipoIdentificacion } from '../../components/SelectorTipoIdentificacion';
 import { Watermark } from '../../components/Watermark';
-import { consultarClienteUseCase } from '../../composition/clienteModule';
+import { consultarParaEnrolamientoUseCase } from '../../composition/enrolamientoModule';
 import { useEnrolamientoStore } from '../../state/enrolamientoStore';
+import { EnrolamientoDuplicadoError } from '../../data/enrolamiento/EnrolamientoRepositoryImpl';
 import { validarFormatoIdentificacion } from '../../utils/validacion';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'IngresoIdentificacion'>;
 
 export function IngresoIdentificacionScreen({ navigation }: Props) {
-  const [tipoIdentificacion, setTipoIdentificacionLocal] = useState<number | null>(null);
+  const [tipoIdentificacion, setTipoIdentificacion] = useState<string | null>(null);
   const [numeroIdentificacion, setNumeroIdentificacion] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const setCliente = useEnrolamientoStore((state) => state.setCliente);
-  const setTipoIdentificacion = useEnrolamientoStore((state) => state.setTipoIdentificacion);
+  const setConsulta = useEnrolamientoStore((state) => state.setConsulta);
   const insets = useSafeAreaInsets();
-
-  function handleSeleccionarTipo(codigo: number) {
-    setTipoIdentificacionLocal(codigo);
-    setTipoIdentificacion(codigo);
-  }
 
   async function handleSubmit() {
     if (tipoIdentificacion === null) {
@@ -43,11 +38,17 @@ export function IngresoIdentificacionScreen({ navigation }: Props) {
     setLoading(true);
 
     try {
-      const cliente = await consultarClienteUseCase.execute(numeroIdentificacion);
-      setCliente(numeroIdentificacion, cliente);
+      const datos = await consultarParaEnrolamientoUseCase.execute(tipoIdentificacion, numeroIdentificacion);
+      setConsulta(tipoIdentificacion, numeroIdentificacion, datos);
       navigation.navigate('ConfirmacionDatos');
-    } catch {
-      setError('No pudimos consultar tus datos. Verifica tu identificación e intenta de nuevo.');
+    } catch (err) {
+      if (err instanceof EnrolamientoDuplicadoError) {
+        setError('Ya tienes una cuenta. Usa "Entrar" para iniciar sesión.');
+      } else if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('No pudimos consultar tus datos. Intenta de nuevo.');
+      }
     } finally {
       setLoading(false);
     }
@@ -65,7 +66,7 @@ export function IngresoIdentificacionScreen({ navigation }: Props) {
       <View style={[styles.form, { paddingBottom: insets.bottom + 20 }]}>
         <Text style={styles.label}>Tipo de identificación</Text>
         <View style={styles.selectorWrapper}>
-          <SelectorTipoIdentificacion value={tipoIdentificacion} onChange={handleSeleccionarTipo} />
+          <SelectorTipoIdentificacion value={tipoIdentificacion} onChange={setTipoIdentificacion} />
         </View>
 
         <Text style={styles.label}>Número de identificación</Text>
@@ -74,7 +75,8 @@ export function IngresoIdentificacionScreen({ navigation }: Props) {
           value={numeroIdentificacion}
           onChangeText={setNumeroIdentificacion}
           placeholder="1 234 567 890"
-          autoCapitalize="characters"
+          autoCapitalize="none"
+          keyboardType="default"
         />
         <Text style={styles.hint}>Lo usamos solo para consultar tus datos básicos.</Text>
 

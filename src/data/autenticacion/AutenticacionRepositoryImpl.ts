@@ -1,47 +1,41 @@
 import { ApiClient } from '../network/ApiClient';
 import { AutenticacionRepository } from '../../domain/autenticacion/AutenticacionRepository';
 import { Cliente } from '../../domain/cliente/Cliente';
-import { AutenticacionApiResponseDTO } from './AutenticacionApiResponseDTO';
+import { LoginApiResponseDTO } from './LoginApiResponseDTO';
+import { EstadoCreditoApiResponseDTO } from './EstadoCreditoApiResponseDTO';
 
-export function clienteFromAutenticacionDTO(dto: AutenticacionApiResponseDTO): Cliente {
+function clienteFromEstadoDTO(dto: EstadoCreditoApiResponseDTO, tipoIdentificacion: string): Cliente {
   return {
-    primerNombre: dto.PrimerNombre,
-    segundoNombre: dto.SegundoNombre,
-    primerApellido: dto.PrimerApellido,
-    segundoApellido: dto.SegundoApellido,
-    numeroIdentificacion: dto.NumeroIdentificacion,
-    telefono: dto.Telefono,
-    correo: dto.Correo,
-    tipoIdentificacion: dto.TipoIdentificacion,
-    cupoDisponible: dto.CupoDisponible,
-    cupoAprobado: dto.CupoAprobado,
-    cupoDisponibleEfectivo: dto.CupoDisponibleEfectivo,
-    pagoMinimo: dto.PagoMinimo,
-    pagoTotalCredito: dto.PagoTotalCredito,
-    cuotaCredito: dto.CuotaCredito,
-    cuotaEnMora: dto.CuotaEnMora,
-    plazo: dto.Plazo,
+    nombreCompleto: dto.nombreCompleto,
+    numeroIdentificacion: dto.numeroIdentificacion,
+    tipoIdentificacion,
+    estadoCredito: dto.estadoCredito,
+    cupoDisponible: dto.cupoDisponible,
+    cupoAprobado: dto.cupoAprobado,
+    cupoDisponibleEfectivo: dto.cupoDisponibleEfectivo,
+    pagoMinimo: dto.pagoMinimo,
+    pagoTotalCredito: dto.pagoTotalCredito,
+    cuotaCredito: dto.cuotaCredito,
+    cuotaEnMora: dto.cuotaEnMora,
+    plazo: dto.plazo,
   };
 }
 
 export class AutenticacionRepositoryImpl implements AutenticacionRepository {
   constructor(private readonly apiClient: ApiClient) {}
 
-  async autenticar(
-    numeroIdentificacion: string,
-    tipoIdentificacion: number,
-    clave: string,
-  ): Promise<Cliente> {
-    const dto = await this.apiClient.post<AutenticacionApiResponseDTO>('/autenticacion', {
-      numeroIdentificacion,
+  async autenticar(tipoIdentificacion: string, identificacion: string, clave: string): Promise<Cliente> {
+    const loginDto = await this.apiClient.post<LoginApiResponseDTO>('/api/login', {
       tipoIdentificacion,
+      identificacion,
       clave,
     });
 
-    if (dto.IdError !== 0) {
-      throw new Error(dto.Mensaje || 'No fue posible iniciar sesión');
-    }
+    const estadoDto = await this.apiClient.getWithAuth<EstadoCreditoApiResponseDTO>(
+      '/api/credito/estado',
+      loginDto.accessToken,
+    );
 
-    return clienteFromAutenticacionDTO(dto);
+    return clienteFromEstadoDTO(estadoDto, tipoIdentificacion);
   }
 }

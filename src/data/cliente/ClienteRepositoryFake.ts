@@ -4,14 +4,10 @@ import { Cliente } from '../../domain/cliente/Cliente';
 const RESPUESTA_SIMULADA_MS = 600;
 
 export const CLIENTE_PRUEBA: Cliente = {
-  primerNombre: 'Mariana',
-  segundoNombre: 'Lucía',
-  primerApellido: 'Restrepo',
-  segundoApellido: 'Gómez',
+  nombreCompleto: 'Mariana Lucía Restrepo Gómez',
   numeroIdentificacion: '',
-  telefono: '3001234567',
-  correo: 'mariana.restrepo@example.com',
-  tipoIdentificacion: 1,
+  tipoIdentificacion: 'CC',
+  estadoCredito: 'Al día',
   cupoDisponible: 1000,
   cupoAprobado: 1000,
   cupoDisponibleEfectivo: 1000,

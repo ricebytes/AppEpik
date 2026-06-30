@@ -6,8 +6,8 @@ import { typography } from '../theme/typography';
 import { TIPOS_IDENTIFICACION } from '../domain/cliente/TipoIdentificacion';
 
 interface SelectorTipoIdentificacionProps {
-  value: number | null;
-  onChange: (codigo: number) => void;
+  value: string | null;
+  onChange: (codigo: string) => void;
 }
 
 export function SelectorTipoIdentificacion({ value, onChange }: SelectorTipoIdentificacionProps) {
@@ -15,7 +15,7 @@ export function SelectorTipoIdentificacion({ value, onChange }: SelectorTipoIden
   const insets = useSafeAreaInsets();
   const seleccionado = TIPOS_IDENTIFICACION.find((tipo) => tipo.codigo === value);
 
-  function handleSeleccionar(codigo: number) {
+  function handleSeleccionar(codigo: string) {
     onChange(codigo);
     setAbierto(false);
   }
