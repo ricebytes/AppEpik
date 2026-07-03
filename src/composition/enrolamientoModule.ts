@@ -3,6 +3,8 @@ import { ApiClient } from '../data/network/ApiClient';
 import { EnrolamientoRepositoryImpl } from '../data/enrolamiento/EnrolamientoRepositoryImpl';
 import { EnrolamientoRepositoryFake } from '../data/enrolamiento/EnrolamientoRepositoryFake';
 import { ConsultarParaEnrolamientoUseCase } from '../domain/enrolamiento/ConsultarParaEnrolamientoUseCase';
+import { EnviarCodigoUseCase } from '../domain/enrolamiento/EnviarCodigoUseCase';
+import { VerificarCodigoUseCase } from '../domain/enrolamiento/VerificarCodigoUseCase';
 import { ConfirmarEnrolamientoUseCase } from '../domain/enrolamiento/ConfirmarEnrolamientoUseCase';
 
 const enrolamientoRepository = USE_FAKE_ENROLAMIENTO_REPOSITORY
@@ -10,4 +12,6 @@ const enrolamientoRepository = USE_FAKE_ENROLAMIENTO_REPOSITORY
   : new EnrolamientoRepositoryImpl(new ApiClient(API_BASE_URL));
 
 export const consultarParaEnrolamientoUseCase = new ConsultarParaEnrolamientoUseCase(enrolamientoRepository);
+export const enviarCodigoUseCase = new EnviarCodigoUseCase(enrolamientoRepository);
+export const verificarCodigoUseCase = new VerificarCodigoUseCase(enrolamientoRepository);
 export const confirmarEnrolamientoUseCase = new ConfirmarEnrolamientoUseCase(enrolamientoRepository);

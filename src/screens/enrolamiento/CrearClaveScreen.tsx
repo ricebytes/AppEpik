@@ -25,6 +25,7 @@ export function CrearClaveScreen({ navigation }: Props) {
   const [loading, setLoading] = useState(false);
   const tipoIdentificacion = useEnrolamientoStore((state) => state.tipoIdentificacion);
   const numeroIdentificacion = useEnrolamientoStore((state) => state.numeroIdentificacion);
+  const tokenVerificacion = useEnrolamientoStore((state) => state.tokenVerificacion);
   const insets = useSafeAreaInsets();
 
   async function handleTecla(tecla: string) {
@@ -61,7 +62,7 @@ export function CrearClaveScreen({ navigation }: Props) {
         return;
       }
 
-      if (!tipoIdentificacion || !numeroIdentificacion) {
+      if (!tipoIdentificacion || !numeroIdentificacion || !tokenVerificacion) {
         setError('Error interno. Vuelve al inicio.');
         return;
       }
@@ -70,7 +71,7 @@ export function CrearClaveScreen({ navigation }: Props) {
       setError('');
 
       try {
-        await confirmarEnrolamientoUseCase.execute(tipoIdentificacion, numeroIdentificacion, siguiente);
+        await confirmarEnrolamientoUseCase.execute(tipoIdentificacion, numeroIdentificacion, siguiente, tokenVerificacion);
         navigation.navigate('Exito');
       } catch {
         setError('No pudimos crear tu cuenta. Intenta de nuevo.');

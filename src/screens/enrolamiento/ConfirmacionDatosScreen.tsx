@@ -60,7 +60,7 @@ export function ConfirmacionDatosScreen({ navigation }: Props) {
 
         <View style={styles.spacer} />
 
-        <Button label="Sí, son correctos" onPress={() => navigation.navigate('CrearClave')} />
+        <Button label="Sí, son correctos" onPress={() => navigation.navigate('VerificacionCorreo')} />
         <View style={styles.buttonGap} />
         <Button label="No son mis datos" variant="secondary" onPress={handleNoSonMisDatos} />
       </View>

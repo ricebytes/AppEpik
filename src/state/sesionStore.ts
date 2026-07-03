@@ -39,13 +39,12 @@ export const useSesionStore = create<SesionState>((set, get) => ({
       const cliente = await iniciarSesionUseCase.execute(tipoIdentificacion, identificacion, clave);
       set({ cliente, estado: 'autenticado', intentosFallidos: 0, bloqueadoHasta: null });
     } catch (err) {
-      // Log para depuración visible en Metro
-      if (err instanceof ApiError) {
-        console.error(`[Login] ApiError status=${err.status} message=${err.message}`);
-      } else if (err instanceof Error) {
-        console.error(`[Login] Error name=${err.name} message=${err.message}`);
-      } else {
-        console.error('[Login] Error desconocido:', err);
+      if (__DEV__) {
+        if (err instanceof ApiError) {
+          console.error(`[Login] ApiError status=${err.status}`);
+        } else {
+          console.error('[Login] Error:', err instanceof Error ? err.name : 'unknown');
+        }
       }
 
       if (err instanceof ApiError && err.status === 423) {

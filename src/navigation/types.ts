@@ -6,6 +6,8 @@ export type RootStackParamList = {
   Dashboard: undefined;
   IngresoIdentificacion: undefined;
   ConfirmacionDatos: undefined;
+  VerificacionCorreo: undefined;
+  IngresarOtp: undefined;
   CrearClave: undefined;
   Exito: undefined;
 };

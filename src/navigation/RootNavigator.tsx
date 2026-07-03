@@ -4,6 +4,8 @@ import { RootStackParamList } from './types';
 import { SplashScreen } from '../screens/enrolamiento/SplashScreen';
 import { IngresoIdentificacionScreen } from '../screens/enrolamiento/IngresoIdentificacionScreen';
 import { ConfirmacionDatosScreen } from '../screens/enrolamiento/ConfirmacionDatosScreen';
+import { VerificacionCorreoScreen } from '../screens/enrolamiento/VerificacionCorreoScreen';
+import { IngresarOtpScreen } from '../screens/enrolamiento/IngresarOtpScreen';
 import { CrearClaveScreen } from '../screens/enrolamiento/CrearClaveScreen';
 import { ExitoScreen } from '../screens/enrolamiento/ExitoScreen';
 import { LoginScreen } from '../screens/login/LoginScreen';
@@ -23,6 +25,8 @@ export function RootNavigator() {
       <Stack.Screen name="Dashboard" component={DashboardScreen} />
       <Stack.Screen name="IngresoIdentificacion" component={IngresoIdentificacionScreen} />
       <Stack.Screen name="ConfirmacionDatos" component={ConfirmacionDatosScreen} />
+      <Stack.Screen name="VerificacionCorreo" component={VerificacionCorreoScreen} />
+      <Stack.Screen name="IngresarOtp" component={IngresarOtpScreen} />
       <Stack.Screen name="CrearClave" component={CrearClaveScreen} />
       <Stack.Screen name="Exito" component={ExitoScreen} />
     </Stack.Navigator>
