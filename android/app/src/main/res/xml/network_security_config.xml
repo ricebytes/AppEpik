@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- Metro bundler en desarrollo: requiere cleartext HTTP a localhost -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">localhost</domain>
+    </domain-config>
+
+    <!-- Backend de pruebas: solo acepta el certificado conocido, sin cleartext -->
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="false">api-financieraepik.azurewebsites.net</domain>
+        <trust-anchors>
+            <!-- Certificado *.azurewebsites.net — Microsoft TLS G2 RSA CA — expira 2026-11-26 -->
+            <certificates src="@raw/epik_api_cert"/>
+        </trust-anchors>
+    </domain-config>
+</network-security-config>
