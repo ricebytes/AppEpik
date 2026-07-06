@@ -77,3 +77,8 @@ yarn-error.log
 # Epik — env y secretos
 .env
 .env.local
+
+# Logs de Metro y crash de JVM (Gradle/NDK)
+metro.log
+hs_err_pid*.log
+replay_pid*.log
