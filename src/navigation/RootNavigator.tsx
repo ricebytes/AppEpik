@@ -12,6 +12,9 @@ import { LoginScreen } from '../screens/login/LoginScreen';
 import { ValidandoLoginScreen } from '../screens/login/ValidandoLoginScreen';
 import { DashboardScreen } from '../screens/login/DashboardScreen';
 import { BienvenidaScreen } from '../screens/bienvenida/BienvenidaScreen';
+import { ExplorarInvitadoScreen } from '../screens/invitado/ExplorarInvitadoScreen';
+import { ComoPageMiCreditoScreen } from '../screens/invitado/ComoPageMiCreditoScreen';
+import { SolicitarCreditoTiendaScreen } from '../screens/invitado/SolicitarCreditoTiendaScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -20,6 +23,9 @@ export function RootNavigator() {
     <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Splash" component={SplashScreen} />
       <Stack.Screen name="Bienvenida" component={BienvenidaScreen} />
+      <Stack.Screen name="ExplorarInvitado" component={ExplorarInvitadoScreen} />
+      <Stack.Screen name="ComoPageMiCredito" component={ComoPageMiCreditoScreen} />
+      <Stack.Screen name="SolicitarCreditoTienda" component={SolicitarCreditoTiendaScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="ValidandoLogin" component={ValidandoLoginScreen} />
       <Stack.Screen name="Dashboard" component={DashboardScreen} />

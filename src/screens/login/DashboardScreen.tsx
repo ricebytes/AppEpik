@@ -25,11 +25,11 @@ function primerNombre(nombreCompleto: string): string {
 }
 
 const TABS = [
-  { icon: '🏠', label: 'Inicio', active: true },
-  { icon: '💳', label: 'Pagos', active: false },
-  { icon: '📄', label: 'Documentos', active: false },
-  { icon: '💵', label: 'Desembolsos', active: false },
-  { icon: '•••', label: 'Más', active: false },
+  { icon: '🏠', label: 'Inicio', active: true, disabled: false, action: 'dashboard' },
+  { icon: '💳', label: 'Pagos', active: false, disabled: true, action: null },
+  { icon: '📄', label: 'Documentos', active: false, disabled: true, action: null },
+  { icon: '💵', label: 'Desembolsos', active: false, disabled: true, action: null },
+  { icon: '···', label: 'Más', active: false, disabled: false, action: 'mas' },
 ];
 
 export function DashboardScreen({ navigation }: Props) {
@@ -84,8 +84,9 @@ export function DashboardScreen({ navigation }: Props) {
               <View style={styles.iconCircle}>
                 <Text style={styles.iconText}>🔔</Text>
               </View>
-              <Pressable style={styles.iconCircle} onPress={handleLogout}>
-                <Text style={styles.iconText}>👤</Text>
+              <Pressable style={styles.logoutBtn} onPress={handleLogout}>
+                <Text style={styles.logoutIcon}>⎋</Text>
+                <Text style={styles.logoutLabel}>Salir</Text>
               </Pressable>
             </View>
           </View>
@@ -167,9 +168,18 @@ export function DashboardScreen({ navigation }: Props) {
       {/* ── BOTTOM TAB BAR ── */}
       <View style={[styles.tabBar, { paddingBottom: insets.bottom + 4 }]}>
         {TABS.map((tab) => (
-          <Pressable key={tab.label} style={styles.tab}>
-            <Text style={styles.tabIcon}>{tab.icon}</Text>
-            <Text style={[styles.tabLabel, tab.active && styles.tabLabelActive]}>
+          <Pressable
+            key={tab.label}
+            style={[styles.tab, tab.disabled && styles.tabDisabled]}
+            disabled={tab.disabled}
+            onPress={() => {
+              if (tab.action === 'mas') navigation.navigate('ExplorarInvitado');
+            }}
+          >
+            <Text style={[styles.tabIcon, tab.disabled && styles.tabIconDisabled]}>
+              {tab.icon}
+            </Text>
+            <Text style={[styles.tabLabel, tab.active && styles.tabLabelActive, tab.disabled && styles.tabLabelDisabled]}>
               {tab.label}
             </Text>
           </Pressable>
@@ -227,6 +237,25 @@ const styles = StyleSheet.create({
   },
   iconText: {
     fontSize: 15,
+  },
+  logoutBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: 'rgba(255,255,255,0.18)',
+    borderRadius: 16,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+  },
+  logoutIcon: {
+    fontSize: 14,
+    color: colors.blanco,
+  },
+  logoutLabel: {
+    ...typography.caption,
+    color: colors.blanco,
+    fontWeight: '700',
+    fontSize: 13,
   },
   heroContent: {
     paddingHorizontal: 20,
@@ -417,5 +446,14 @@ const styles = StyleSheet.create({
   tabLabelActive: {
     color: colors.amarillo,
     fontWeight: '700',
+  },
+  tabDisabled: {
+    opacity: 0.35,
+  },
+  tabIconDisabled: {
+    opacity: 0.5,
+  },
+  tabLabelDisabled: {
+    color: '#CCC',
   },
 });

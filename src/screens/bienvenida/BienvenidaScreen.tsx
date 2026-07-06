@@ -82,6 +82,13 @@ export function BienvenidaScreen({ navigation }: Props) {
             <Text style={styles.btnOutlineLabel}>¿Eres nuevo? Crea tu cuenta</Text>
             <Text style={styles.btnOutlineArrow}>→</Text>
           </Pressable>
+
+          <Pressable
+            style={({ pressed }) => [styles.btnInvitado, pressed && { opacity: 0.65 }]}
+            onPress={() => navigation.navigate('ExplorarInvitado')}
+          >
+            <Text style={styles.btnInvitadoLabel}>Explorar como invitado</Text>
+          </Pressable>
         </View>
 
         {/* Indicadores de confianza */}
@@ -215,5 +222,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 10,
     lineHeight: 14,
+  },
+  btnInvitado: {
+    alignItems: 'center',
+    paddingVertical: 8,
+  },
+  btnInvitadoLabel: {
+    ...typography.body,
+    color: 'rgba(255,255,255,0.65)',
+    fontSize: 14,
+    textDecorationLine: 'underline',
   },
 });
