@@ -22,7 +22,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 const PIN_LENGTH = 4;
 
 export function LoginScreen({ navigation }: Props) {
-  const [tipoIdentificacion, setTipoIdentificacion] = useState<string | null>(null);
+  const [tipoIdentificacion, setTipoIdentificacion] = useState<string | null>('CC');
   const [numeroIdentificacion, setNumeroIdentificacion] = useState('');
   const [pin, setPin] = useState('');
   const login = useSesionStore((state) => state.login);
