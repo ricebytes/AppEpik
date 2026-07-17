@@ -99,7 +99,7 @@ export function LoginScreen({ navigation }: Props) {
         <Text style={styles.label}>Clave de 4 dígitos</Text>
         <TecladoPin pin={pin} longitud={PIN_LENGTH} onTecla={handleTecla} />
 
-        <Pressable style={styles.olvidasteClave}>
+        <Pressable style={styles.olvidasteClave} onPress={() => navigation.navigate('RecuperarCuenta')}>
           <Text style={styles.olvidasteClaveTexto}>¿Olvidaste tu clave?</Text>
         </Pressable>
 

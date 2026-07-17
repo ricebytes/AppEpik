@@ -15,6 +15,11 @@ import { BienvenidaScreen } from '../screens/bienvenida/BienvenidaScreen';
 import { ExplorarInvitadoScreen } from '../screens/invitado/ExplorarInvitadoScreen';
 import { ComoPageMiCreditoScreen } from '../screens/invitado/ComoPageMiCreditoScreen';
 import { SolicitarCreditoTiendaScreen } from '../screens/invitado/SolicitarCreditoTiendaScreen';
+import { RecuperarCuentaScreen } from '../screens/recuperacion/RecuperarCuentaScreen';
+import { VerificacionCorreoRecuperacionScreen } from '../screens/recuperacion/VerificacionCorreoRecuperacionScreen';
+import { IngresarOtpRecuperacionScreen } from '../screens/recuperacion/IngresarOtpRecuperacionScreen';
+import { NuevaClaveScreen } from '../screens/recuperacion/NuevaClaveScreen';
+import { ExitoRecuperacionScreen } from '../screens/recuperacion/ExitoRecuperacionScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -26,6 +31,11 @@ export function RootNavigator() {
       <Stack.Screen name="ExplorarInvitado" component={ExplorarInvitadoScreen} />
       <Stack.Screen name="ComoPageMiCredito" component={ComoPageMiCreditoScreen} />
       <Stack.Screen name="SolicitarCreditoTienda" component={SolicitarCreditoTiendaScreen} />
+      <Stack.Screen name="RecuperarCuenta" component={RecuperarCuentaScreen} />
+      <Stack.Screen name="VerificacionCorreoRecuperacion" component={VerificacionCorreoRecuperacionScreen} />
+      <Stack.Screen name="IngresarOtpRecuperacion" component={IngresarOtpRecuperacionScreen} />
+      <Stack.Screen name="NuevaClave" component={NuevaClaveScreen} />
+      <Stack.Screen name="ExitoRecuperacion" component={ExitoRecuperacionScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="ValidandoLogin" component={ValidandoLoginScreen} />
       <Stack.Screen name="Dashboard" component={DashboardScreen} />

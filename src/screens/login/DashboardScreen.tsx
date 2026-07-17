@@ -81,9 +81,6 @@ export function DashboardScreen({ navigation }: Props) {
               <Text style={styles.logoCredito}> crédito</Text>
             </View>
             <View style={styles.topIcons}>
-              <View style={styles.iconCircle}>
-                <Text style={styles.iconText}>🔔</Text>
-              </View>
               <Pressable style={styles.logoutBtn} onPress={handleLogout}>
                 <Text style={styles.logoutIcon}>⎋</Text>
                 <Text style={styles.logoutLabel}>Salir</Text>
@@ -105,8 +102,8 @@ export function DashboardScreen({ navigation }: Props) {
               </View>
             )}
 
-            {/* Mi crédito button */}
-            <Pressable style={styles.creditoBtnWrapper} onPress={() => {}}>
+            {/* Mi crédito — informativo, sin acción por ahora */}
+            <View style={styles.creditoBtnWrapper}>
               <LinearGradient
                 colors={[colors.violeta, colors.amarillo]}
                 start={{ x: 0, y: 0.5 }}
@@ -115,9 +112,8 @@ export function DashboardScreen({ navigation }: Props) {
               >
                 <Text style={styles.creditoBtnIcon}>💳</Text>
                 <Text style={styles.creditoBtnLabel}>Mi crédito</Text>
-                <Text style={styles.creditoBtnArrow}>›</Text>
               </LinearGradient>
-            </Pressable>
+            </View>
           </View>
         </ImageBackground>
 
@@ -136,7 +132,6 @@ export function DashboardScreen({ navigation }: Props) {
                   <Text style={styles.rowLabel}>{fila.label}</Text>
                   <Text style={styles.rowValor}>{fila.valor}</Text>
                 </View>
-                <Text style={styles.rowChevron}>›</Text>
               </View>
             ))}
           </View>
@@ -157,9 +152,6 @@ export function DashboardScreen({ navigation }: Props) {
               <Text style={styles.cupoMontoIcon}>💳</Text>
               <Text style={styles.cupoMonto}>{formatMonto(cliente.cupoDisponible)} USD</Text>
             </View>
-            <Pressable onPress={() => {}}>
-              <Text style={styles.cupoLink}>Ver más detalles  ›</Text>
-            </Pressable>
           </ImageBackground>
 
         </View>

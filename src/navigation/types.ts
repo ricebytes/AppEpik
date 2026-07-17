@@ -7,6 +7,11 @@ export type RootStackParamList = {
   ExplorarInvitado: undefined;
   ComoPageMiCredito: undefined;
   SolicitarCreditoTienda: undefined;
+  RecuperarCuenta: undefined;
+  VerificacionCorreoRecuperacion: undefined;
+  IngresarOtpRecuperacion: undefined;
+  NuevaClave: undefined;
+  ExitoRecuperacion: undefined;
   IngresoIdentificacion: undefined;
   ConfirmacionDatos: undefined;
   VerificacionCorreo: undefined;

@@ -61,10 +61,6 @@ export function ExplorarInvitadoScreen({ navigation }: Props) {
           <Text style={styles.headerCredito}> crédito</Text>
         </View>
         <View style={styles.headerIcons}>
-          <View style={styles.iconBtn}>
-            <Text style={styles.iconEmoji}>🔔</Text>
-            <View style={styles.badge} />
-          </View>
           <Pressable
             style={styles.iconBtn}
             onPress={() => navigation.goBack()}
