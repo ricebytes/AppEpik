@@ -33,10 +33,10 @@
 		<false/>
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
-		<!-- SSL pinning para el backend de Epik (iOS 14+).
-		     Hash SPKI SHA-256 del certificado *.azurewebsites.net
-		     (Microsoft TLS G2 RSA CA, expira 2027-01-16).
-		     Al vencer el certificado actualizar el hash aquí. -->
+		<!-- SSL pinning para el backend de Epik (iOS 14+). Doble pin:
+		     - Hoja: *.azurewebsites.net              expira 2027-01-16
+		     - CA:   Microsoft TLS G2 RSA CA OCSP 02  expira 2029-06-03
+		     Si Azure rota el cert hoja, el pin de CA actua de respaldo. -->
 		<key>NSPinnedDomains</key>
 		<dict>
 			<key>api-financieraepik.azurewebsites.net</key>
@@ -50,9 +50,16 @@
 						<string>gSArDPaZk6rGt5RjKFpUggILfe2acAWX91OlHFNdDJA=</string>
 					</dict>
 				</array>
+					<key>NSPinnedCAIdentities</key>
+					<array>
+						<dict>
+							<key>SPKI-SHA256-BASE64</key>
+							<string>X0Ebh9Ff3DxzDz3NGauSLFLiPe8BsycRjoZbV+sFQ8Q=</string>
+						</dict>
+					</array>
+				</dict>
 			</dict>
 		</dict>
-	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>UILaunchStoryboardName</key>

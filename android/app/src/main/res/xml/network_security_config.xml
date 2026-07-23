@@ -5,12 +5,14 @@
         <domain includeSubdomains="false">localhost</domain>
     </domain-config>
 
-    <!-- Backend de pruebas: solo acepta el certificado conocido, sin cleartext -->
+    <!-- Backend: doble pinning — cert hoja + CA intermedia como respaldo -->
     <domain-config cleartextTrafficPermitted="false">
         <domain includeSubdomains="false">api-financieraepik.azurewebsites.net</domain>
-        <trust-anchors>
-            <!-- Certificado *.azurewebsites.net — Microsoft TLS G2 RSA CA — expira 2027-01-16 -->
-            <certificates src="@raw/epik_api_cert"/>
-        </trust-anchors>
+        <pin-set expiration="2029-06-03">
+            <!-- Pin primario: cert hoja *.azurewebsites.net — expira 2027-01-16 -->
+            <pin digest="SHA-256">gSArDPaZk6rGt5RjKFpUggILfe2acAWX91OlHFNdDJA=</pin>
+            <!-- Pin respaldo: Microsoft TLS G2 RSA CA OCSP 02 — expira 2029-06-03 -->
+            <pin digest="SHA-256">X0Ebh9Ff3DxzDz3NGauSLFLiPe8BsycRjoZbV+sFQ8Q=</pin>
+        </pin-set>
     </domain-config>
 </network-security-config>
