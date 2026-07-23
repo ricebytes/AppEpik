@@ -43,7 +43,8 @@ export const useSesionStore = create<SesionState>((set, get) => ({
         if (err instanceof ApiError) {
           console.error(`[Login] ApiError status=${err.status}`);
         } else {
-          console.error('[Login] Error:', err instanceof Error ? err.name : 'unknown');
+          console.error('[Login] Error name:', err instanceof Error ? err.name : 'unknown');
+          console.error('[Login] Error msg:', err instanceof Error ? err.message : String(err));
         }
       }
 

@@ -35,7 +35,7 @@
 		<true/>
 		<!-- SSL pinning para el backend de Epik (iOS 14+).
 		     Hash SPKI SHA-256 del certificado *.azurewebsites.net
-		     (Microsoft TLS G2 RSA CA, expira 2026-11-26).
+		     (Microsoft TLS G2 RSA CA, expira 2027-01-16).
 		     Al vencer el certificado actualizar el hash aquí. -->
 		<key>NSPinnedDomains</key>
 		<dict>
@@ -47,7 +47,7 @@
 				<array>
 					<dict>
 						<key>SPKI-SHA256-BASE64</key>
-						<string>qe1wV6b7PLC8davkQiXsf4YQ9RS3QkszcfhtpvP2EjM=</string>
+						<string>gSArDPaZk6rGt5RjKFpUggILfe2acAWX91OlHFNdDJA=</string>
 					</dict>
 				</array>
 			</dict>

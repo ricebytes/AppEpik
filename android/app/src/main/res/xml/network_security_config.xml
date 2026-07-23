@@ -9,7 +9,7 @@
     <domain-config cleartextTrafficPermitted="false">
         <domain includeSubdomains="false">api-financieraepik.azurewebsites.net</domain>
         <trust-anchors>
-            <!-- Certificado *.azurewebsites.net — Microsoft TLS G2 RSA CA — expira 2026-11-26 -->
+            <!-- Certificado *.azurewebsites.net — Microsoft TLS G2 RSA CA — expira 2027-01-16 -->
             <certificates src="@raw/epik_api_cert"/>
         </trust-anchors>
     </domain-config>
