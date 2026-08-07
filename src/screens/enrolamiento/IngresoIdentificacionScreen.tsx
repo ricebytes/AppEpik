@@ -21,7 +21,7 @@ import {
 type Props = NativeStackScreenProps<RootStackParamList, 'IngresoIdentificacion'>;
 
 export function IngresoIdentificacionScreen({ navigation }: Props) {
-  const [tipoIdentificacion, setTipoIdentificacion] = useState<string | null>(null);
+  const [tipoIdentificacion, setTipoIdentificacion] = useState<string>('CC');
   const [numeroIdentificacion, setNumeroIdentificacion] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -34,11 +34,6 @@ export function IngresoIdentificacionScreen({ navigation }: Props) {
   }
 
   async function handleSubmit() {
-    if (tipoIdentificacion === null) {
-      setError('Selecciona tu tipo de identificación.');
-      return;
-    }
-
     if (!validarFormatoIdentificacion(numeroIdentificacion, tipoIdentificacion)) {
       setError('Ingresa un número de identificación válido.');
       return;
@@ -98,7 +93,7 @@ export function IngresoIdentificacionScreen({ navigation }: Props) {
         {loading ? (
           <ActivityIndicator color={colors.violeta} />
         ) : (
-          <Button label="Pide tú →" onPress={handleSubmit} />
+          <Button label="Validar →" onPress={handleSubmit} />
         )}
       </View>
     </View>
