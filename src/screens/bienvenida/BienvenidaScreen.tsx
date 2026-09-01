@@ -15,8 +15,8 @@ const LOGO_HEIGHT = LOGO_WIDTH / LOGO_ASPECT;
 
 const TRUST_ITEMS = [
   { icon: '🔒', label: 'Seguro\ny confiable' },
-  { icon: '⚡', label: 'Fácil y rápido\na tu alcance' },
-  { icon: '📅', label: 'Paga a tu ritmo\nsin complicaciones' },
+  { icon: '🕐', label: 'Fácil y rápido\na tu alcance' },
+  { icon: '📅', label: 'Paga en cómodas cuotas\nsin complicaciones' },
 ];
 
 export function BienvenidaScreen({ navigation }: Props) {
@@ -78,7 +78,6 @@ export function BienvenidaScreen({ navigation }: Props) {
             style={({ pressed }) => [styles.btnOutline, pressed && { opacity: 0.75 }]}
             onPress={() => navigation.navigate('IngresoIdentificacion')}
           >
-            <Text style={styles.btnIcon}>✨</Text>
             <Text style={styles.btnOutlineLabel}>¿Eres nuevo? Crea tu cuenta</Text>
             <Text style={styles.btnOutlineArrow}>→</Text>
           </Pressable>

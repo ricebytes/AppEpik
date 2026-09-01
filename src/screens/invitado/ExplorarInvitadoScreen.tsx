@@ -25,7 +25,7 @@ const OPCIONES = [
   {
     icono: '💳',
     titulo: '¿Cómo pago\nmi crédito?',
-    descripcion: 'Conoce los medios de pago disponibles para ti.',
+    descripcion: 'Conoce los Métodos de pago disponibles para ti.',
     ruta: 'ComoPageMiCredito' as const,
   },
   {

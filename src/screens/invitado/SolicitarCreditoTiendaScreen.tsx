@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Linking,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -53,7 +54,7 @@ export function SolicitarCreditoTiendaScreen({ navigation }: Props) {
           <Text style={styles.heroIcon}>💜</Text>
           <Text style={styles.heroTitle}>Obtener su crédito con Epik es muy fácil</Text>
           <Text style={styles.heroDesc}>
-            Solo debe acercarse a cualquiera de nuestras tiendas aliadas con su cédula original.
+            Solo debe acercarse a cualquiera de nuestras tiendas aliadas con su cédula.
             Uno de nuestros asesores realizará el estudio de su solicitud y, en pocos minutos,
             le informará si su crédito fue aprobado.
           </Text>
@@ -88,7 +89,7 @@ export function SolicitarCreditoTiendaScreen({ navigation }: Props) {
           <View style={[styles.infoCard, { flex: 1 }]}>
             <Text style={styles.infoIcon}>⏱️</Text>
             <Text style={styles.infoTitle}>¿Cuánto tarda?</Text>
-            <Text style={styles.infoDesc}>Menos de 5 minutos</Text>
+            <Text style={styles.infoDesc}>En 5 minutos</Text>
           </View>
         </View>
 
@@ -99,7 +100,9 @@ export function SolicitarCreditoTiendaScreen({ navigation }: Props) {
           </Text>
           <Pressable
             style={({ pressed }) => [styles.ctaBtn, pressed && { opacity: 0.85 }]}
-            onPress={() => navigation.navigate('IngresoIdentificacion')}
+            onPress={() => Linking.openURL(
+              'https://wa.me/5078404688?text=Soy%20nuevo%20deseo%20solicitar%20un%20credito%20epik',
+            )}
           >
             <Text style={styles.ctaBtnLabel}>Solicitar crédito online →</Text>
           </Pressable>

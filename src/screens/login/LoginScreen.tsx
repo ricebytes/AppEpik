@@ -75,8 +75,8 @@ export function LoginScreen({ navigation }: Props) {
       <Watermark />
 
       <View style={styles.header}>
-        <Text style={styles.greeting}>¡Hola de nuevo!</Text>
-        <Text style={styles.headline}>Confiamos en ti,{'\n'}sonríe.</Text>
+        <Text style={styles.greeting}>¡Nos alegra verte!</Text>
+        <Text style={styles.headline}>Ingresa tus datos para conocer los detalles de tu crédito</Text>
       </View>
 
       <View style={[styles.form, { paddingBottom: insets.bottom + 20 }]}>

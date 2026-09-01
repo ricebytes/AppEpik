@@ -20,8 +20,8 @@ const MEDIOS = [
     numero: '1️⃣',
     titulo: 'Yappy',
     lineas: [
-      'Búsquenos como @epikcredito o @epikenarrocha.',
-      'Puede pagar desde su banco o directamente desde la app de Yappy.',
+      'Búscanos como @epikcredito o @epikenarrocha.',
+      'Puedes pagar desde tu banco o directamente desde la app de Yappy.',
     ],
     nota: 'Al realizar el pago, agregue el número de cédula del titular del crédito en la opción "Comentarios".',
   },
@@ -30,8 +30,8 @@ const MEDIOS = [
     numero: '2️⃣',
     titulo: 'Punto Pago (Kioskos)',
     lineas: [
-      'Realice su pago en cualquiera de los kioskos Punto Pago.',
-      'Su pago se aplicará de forma inmediata.',
+      'Realiza tu pago en cualquiera de los kioscos Punto Pago.',
+      'Tu pago se aplicará de forma inmediata.',
     ],
     nota: null,
   },
@@ -40,8 +40,7 @@ const MEDIOS = [
     numero: '3️⃣',
     titulo: 'App Punto Pago',
     lineas: [
-      'También puede pagar desde la app Punto Pago.',
-      'Desde allí podrá consultar la ubicación de los kioskos y sus horarios de atención.',
+      'También puedes pagar desde la app Punto Pago y desde allí podrás consultar la ubicación de los kioscos y sus horarios de atención.'
     ],
     nota: null,
   },
@@ -72,11 +71,11 @@ export function ComoPageMiCreditoScreen({ navigation }: Props) {
           <Text style={styles.introIcon}>💳</Text>
           <Text style={styles.introTitle}>Elige el medio de pago que prefieras</Text>
           <Text style={styles.introDesc}>
-            Pague su crédito de forma rápida y segura a través de cualquiera de estas opciones:
+           Paga tu crédito de forma rápida y segura a través de cualquiera de estas opciones:
           </Text>
         </View>
 
-        {/* Medios de pago */}
+        {/* Métodos de pago */}
         {MEDIOS.map((medio) => (
           <View key={medio.titulo} style={styles.card}>
             <View style={styles.cardHeader}>

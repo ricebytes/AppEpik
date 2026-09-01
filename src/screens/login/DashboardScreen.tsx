@@ -49,11 +49,10 @@ export function DashboardScreen({ navigation }: Props) {
     navigation.reset({ index: 0, routes: [{ name: 'Bienvenida' }] });
   }
 
-  const filas = [
-    { icon: '💳', label: 'Saldo total por pagar', valor: `${formatMonto(cliente.pagoTotalCredito)} USD` },
-    { icon: '📋', label: 'Pago mínimo', valor: `${formatMonto(cliente.pagoMinimo)} USD` },
-    { icon: '📅', label: 'Valor cuota', valor: `${formatMonto(cliente.cuotaCredito)} USD` },
-  ];
+  const totalCredito = cliente.cupoAprobado > 0 ? cliente.cupoAprobado : cliente.pagoTotalCredito;
+  const pagado = Math.max(0, totalCredito - cliente.pagoTotalCredito);
+  const pctPagado = totalCredito > 0 ? Math.round((pagado / totalCredito) * 100) : 0;
+  const pctPendiente = 100 - pctPagado;
 
   return (
     <View style={styles.root}>
@@ -120,20 +119,38 @@ export function DashboardScreen({ navigation }: Props) {
         {/* ── CONTENT ── */}
         <View style={styles.content}>
 
-          {/* Resumen card */}
+          {/* ¿Cómo va tu crédito? card */}
           <View style={styles.card}>
-            <Text style={styles.cardTitle}>Resumen de tu crédito</Text>
-            {filas.map((fila, i) => (
-              <View key={fila.label} style={[styles.row, i > 0 && styles.rowBorder]}>
-                <View style={styles.rowIcon}>
-                  <Text style={styles.rowIconText}>{fila.icon}</Text>
-                </View>
-                <View style={styles.rowTexts}>
-                  <Text style={styles.rowLabel}>{fila.label}</Text>
-                  <Text style={styles.rowValor}>{fila.valor}</Text>
-                </View>
+            <Text style={styles.cardTitle}>¿Cómo va tu crédito?</Text>
+            <Text style={styles.cardSubtitle}>Epik Crédito</Text>
+
+            {/* Barra de progreso */}
+            <View style={styles.barraRow}>
+              <View style={styles.barraTrack}>
+                <View style={[styles.barraFill, { flex: pctPagado }]} />
+                <View style={[styles.barraPendiente, { flex: pctPendiente }]} />
               </View>
-            ))}
+            </View>
+            <View style={styles.barraLabels}>
+              <Text style={styles.barraLabelPagado}>Pagado {pctPagado}%</Text>
+              <View style={styles.saldoPendienteBox}>
+                <Text style={styles.saldoPendienteLabel}>Saldo pendiente</Text>
+                <Text style={styles.saldoPendienteValor}>{formatMonto(cliente.pagoTotalCredito)} USD</Text>
+              </View>
+            </View>
+
+            {/* Próximo pago */}
+            <View style={styles.proximoPagoBox}>
+              <Text style={styles.proximoPagoTitulo}>Próximo pago</Text>
+              <View style={styles.proximoPagoFila}>
+                <Text style={styles.proximoPagoLabel}>Pago mínimo</Text>
+                <Text style={styles.proximoPagoValor}>{formatMonto(cliente.pagoMinimo)} USD</Text>
+              </View>
+              <View style={[styles.proximoPagoFila, styles.proximoPagoFilaBorder]}>
+                <Text style={styles.proximoPagoLabel}>Valor cuota</Text>
+                <Text style={styles.proximoPagoValor}>{formatMonto(cliente.cuotaCredito)} USD</Text>
+              </View>
+            </View>
           </View>
 
           {/* Cupo disponible card */}
@@ -314,7 +331,7 @@ const styles = StyleSheet.create({
     gap: 14,
   },
 
-  /* Resumen card */
+  /* ¿Cómo va tu crédito? card */
   card: {
     backgroundColor: colors.blanco,
     borderRadius: 16,
@@ -329,49 +346,95 @@ const styles = StyleSheet.create({
     ...typography.body,
     color: colors.moradoOscuro,
     fontWeight: '700',
-    marginBottom: 14,
-    fontSize: 15,
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 12,
-    gap: 12,
-  },
-  rowBorder: {
-    borderTopWidth: 1,
-    borderTopColor: '#F0EFF5',
-  },
-  rowIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(120,70,255,0.12)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  rowIconText: {
-    fontSize: 18,
-  },
-  rowTexts: {
-    flex: 1,
-  },
-  rowLabel: {
-    ...typography.caption,
-    color: '#888',
-    fontSize: 12,
+    fontSize: 16,
     marginBottom: 2,
   },
-  rowValor: {
+  cardSubtitle: {
+    ...typography.caption,
+    color: colors.violeta,
+    fontSize: 12,
+    fontWeight: '600',
+    marginBottom: 16,
+  },
+  barraRow: {
+    marginBottom: 8,
+  },
+  barraTrack: {
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: '#E8E6F0',
+    flexDirection: 'row',
+    overflow: 'hidden',
+  },
+  barraFill: {
+    backgroundColor: colors.violeta,
+    borderRadius: 6,
+  },
+  barraPendiente: {
+    backgroundColor: '#E8E6F0',
+  },
+  barraLabels: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 18,
+  },
+  barraLabelPagado: {
+    ...typography.caption,
+    color: colors.violeta,
+    fontWeight: '700',
+    fontSize: 12,
+  },
+  saldoPendienteBox: {
+    alignItems: 'flex-end',
+  },
+  saldoPendienteLabel: {
+    ...typography.caption,
+    color: '#888',
+    fontSize: 11,
+  },
+  saldoPendienteValor: {
+    ...typography.body,
+    color: colors.moradoOscuro,
+    fontWeight: '800',
+    fontSize: 15,
+  },
+  proximoPagoBox: {
+    backgroundColor: `${colors.violeta}0F`,
+    borderRadius: 12,
+    padding: 14,
+    borderLeftWidth: 3,
+    borderLeftColor: colors.violeta,
+  },
+  proximoPagoTitulo: {
+    ...typography.caption,
+    color: colors.violeta,
+    fontWeight: '700',
+    fontSize: 12,
+    marginBottom: 10,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  proximoPagoFila: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 6,
+  },
+  proximoPagoFilaBorder: {
+    borderTopWidth: 1,
+    borderTopColor: `${colors.violeta}22`,
+  },
+  proximoPagoLabel: {
+    ...typography.body,
+    color: '#555',
+    fontSize: 13,
+  },
+  proximoPagoValor: {
     ...typography.body,
     color: colors.moradoOscuro,
     fontWeight: '700',
-    fontSize: 16,
-  },
-  rowChevron: {
-    color: '#CCC',
-    fontSize: 22,
-    fontWeight: '600',
+    fontSize: 15,
   },
 
   /* Cupo card */
