@@ -47,14 +47,14 @@
 				<array>
 					<dict>
 						<key>SPKI-SHA256-BASE64</key>
-						<string>gSArDPaZk6rGt5RjKFpUggILfe2acAWX91OlHFNdDJA=</string>
+						<string>FMN/4rrRGLs0GOYT9rhanFX+hz3hC2zy7I7wr4H9w/8=</string>
 					</dict>
 				</array>
 					<key>NSPinnedCAIdentities</key>
 					<array>
 						<dict>
 							<key>SPKI-SHA256-BASE64</key>
-							<string>X0Ebh9Ff3DxzDz3NGauSLFLiPe8BsycRjoZbV+sFQ8Q=</string>
+							<string>SwPJlmyGOywAipWl7ZJUBwRIx7IZ0oMQL2psW26OKs0=</string>
 						</dict>
 					</array>
 				</dict>

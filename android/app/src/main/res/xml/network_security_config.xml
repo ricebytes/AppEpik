@@ -8,11 +8,11 @@
     <!-- Backend: doble pinning — cert hoja + CA intermedia como respaldo -->
     <domain-config cleartextTrafficPermitted="false">
         <domain includeSubdomains="false">api-financieraepik.azurewebsites.net</domain>
-        <pin-set expiration="2029-06-03">
-            <!-- Pin primario: cert hoja *.azurewebsites.net — expira 2027-01-16 -->
-            <pin digest="SHA-256">gSArDPaZk6rGt5RjKFpUggILfe2acAWX91OlHFNdDJA=</pin>
-            <!-- Pin respaldo: Microsoft TLS G2 RSA CA OCSP 02 — expira 2029-06-03 -->
-            <pin digest="SHA-256">X0Ebh9Ff3DxzDz3NGauSLFLiPe8BsycRjoZbV+sFQ8Q=</pin>
+        <pin-set expiration="2029-06-19">
+            <!-- Pin primario: cert hoja *.azurewebsites.net — expira 2027-02-24 -->
+            <pin digest="SHA-256">FMN/4rrRGLs0GOYT9rhanFX+hz3hC2zy7I7wr4H9w/8=</pin>
+            <!-- Pin respaldo: Microsoft TLS RSA Root G2 — expira 2029-06-19 (root, muy estable) -->
+            <pin digest="SHA-256">SwPJlmyGOywAipWl7ZJUBwRIx7IZ0oMQL2psW26OKs0=</pin>
         </pin-set>
     </domain-config>
 </network-security-config>

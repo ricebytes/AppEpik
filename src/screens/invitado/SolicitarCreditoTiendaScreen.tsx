@@ -12,6 +12,7 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/types';
 import { colors } from '../../theme/colors';
 import { typography } from '../../theme/typography';
+import { useSesionStore } from '../../state/sesionStore';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'SolicitarCreditoTienda'>;
 
@@ -29,8 +30,14 @@ const TIENDAS = [
   'Foto Sonido',
 ];
 
+const WA_NUM = '5078404688';
+const MSG_INVITADO = 'Soy%20nuevo%20deseo%20solicitar%20un%20credito%20epik';
+const MSG_CLIENTE = 'Quiero%20usar%20mi%20cupo%20disponible%2C%20y%20quiero%20hablar%20con%20un%20asesor%20comercial%20para%20finalizar%20el%20proceso.';
+
 export function SolicitarCreditoTiendaScreen({ navigation }: Props) {
   const insets = useSafeAreaInsets();
+  const cliente = useSesionStore((state) => state.cliente);
+  const waMsg = cliente !== null ? MSG_CLIENTE : MSG_INVITADO;
 
   return (
     <View style={[styles.root, { paddingTop: insets.top }]}>
@@ -100,9 +107,7 @@ export function SolicitarCreditoTiendaScreen({ navigation }: Props) {
           </Text>
           <Pressable
             style={({ pressed }) => [styles.ctaBtn, pressed && { opacity: 0.85 }]}
-            onPress={() => Linking.openURL(
-              'https://wa.me/5078404688?text=Soy%20nuevo%20deseo%20solicitar%20un%20credito%20epik',
-            )}
+            onPress={() => Linking.openURL(`https://wa.me/${WA_NUM}?text=${waMsg}`)}
           >
             <Text style={styles.ctaBtnLabel}>Solicitar crédito online →</Text>
           </Pressable>

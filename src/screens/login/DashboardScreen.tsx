@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   ImageBackground,
+  Linking,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -19,6 +20,7 @@ import { formatMonto } from '../../utils/moneda';
 type Props = NativeStackScreenProps<RootStackParamList, 'Dashboard'>;
 
 const HEADER_HEIGHT = 280;
+const WA_URL = 'https://wa.me/5078404688?text=Quiero%20usar%20mi%20cupo%20disponible%2C%20y%20quiero%20hablar%20con%20un%20asesor%20comercial%20para%20finalizar%20el%20proceso.';
 
 function primerNombre(nombreCompleto: string): string {
   return nombreCompleto.trim().split(/\s+/)[0] ?? nombreCompleto;
@@ -169,6 +171,12 @@ export function DashboardScreen({ navigation }: Props) {
               <Text style={styles.cupoMontoIcon}>💳</Text>
               <Text style={styles.cupoMonto}>{formatMonto(cliente.cupoDisponible)} USD</Text>
             </View>
+            <Pressable
+              onPress={() => Linking.openURL(WA_URL)}
+              style={({ pressed }) => [styles.cupoLink, pressed && { opacity: 0.7 }]}
+            >
+              <Text style={styles.cupoLinkText}>Quiero usar mi saldo →</Text>
+            </Pressable>
           </ImageBackground>
 
         </View>
@@ -471,10 +479,15 @@ const styles = StyleSheet.create({
     fontWeight: '800',
   },
   cupoLink: {
+    alignSelf: 'flex-start',
+    marginTop: 10,
+  },
+  cupoLinkText: {
     ...typography.body,
     color: colors.amarillo,
     fontWeight: '700',
     fontSize: 14,
+    textDecorationLine: 'underline',
   },
 
   /* Bottom tab bar */
